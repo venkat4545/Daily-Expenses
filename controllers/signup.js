@@ -1,4 +1,5 @@
 const mysql=require("mysql");
+const notifier = require('node-notifier');
 const db=mysql.createConnection({
     host:'localhost',
     user:'root',
@@ -8,6 +9,13 @@ const db=mysql.createConnection({
 exports.signup=(req,res)=>{
     const {name,email,password,phno,gender}=req.body;
     console.log(req.body)
+    db.query('SELECT Email from signup WHERE email = ?', [email], (err, results) => {
+        if(err){
+            console.log(err)
+        }else if(results.length>0){
+            res.send("Email is already in use")
+        }
+    }) 
     db.query('INSERT INTO signup SET ?', { Name: name, Email: email, password: password,phno:phno,Gender:gender }, (err, results) => {
         if (err) {
             console.log(err);
@@ -19,11 +27,14 @@ exports.signup=(req,res)=>{
 
 exports.login=(req,res)=>{
     const {email,password}=req.body;
-    db.query('SELECT * FROM signup WHERE email=? AND password=?',[email,password],(err,results)=>{
+
+    db.query('SELECT Email FROM signup WHERE Email=? AND password=?',[email,password],(err,results)=>{
         if (err) {
             console.log(err);
-        } else {
+        } else if(results.length>0) {    
             return res.redirect('../welcome.html');
+        }else{
+           res.send("Email or Password is incorret!")
         }
     })
 }

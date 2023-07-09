@@ -11,11 +11,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "alert": "^5.1.4",
     "body-parser": "^1.20.2",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.3",
     "hbs": "^4.2.0",
     "mysql": "^2.18.1",
-    "nodemon": "^2.0.22"
+    "node-notifier": "^10.0.1",
+    "nodemon": "^2.0.22",
+    "popups": "^1.1.3"
   }
 }
