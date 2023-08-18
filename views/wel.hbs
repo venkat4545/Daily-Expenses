@@ -1,0 +1,154 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CALENDAR</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="/wel.css">
+  <script src="/wel.js" defer></script>
+</head>
+
+<body>
+  <div class="contianer">
+    {{!-- <div id="event-date">12th december 2022</div> --}}
+    <div class="calendar">
+      <div class="calendar-header">
+        <span class="month-picker" id="month-picker"> May </span>
+        <div class="year-picker" id="year-picker">
+          <span class="year-change" id="pre-year">
+            <pre><</pre>
+          </span>
+          <span id="year">2020 </span>
+          <span class="year-change" id="next-year">
+            <pre>></pre>
+          </span>
+        </div>
+      </div><br>
+
+      <div class="calendar-body">
+        <div class="calendar-week-days">
+          <div>Sun</div>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+          <div>Sat</div>
+        </div>
+        <div class="calendar-days">
+        </div>
+      </div>
+      <div class="calendar-footer">
+      </div>
+      <div class="date-time-formate">
+        <div class="day-text-formate">TODAY</div>
+        <div class="date-time-value">
+          <div class="time-formate">02:51:20</div>
+          <div class="date-formate">23 - july - 2022</div>
+        </div>
+      </div>
+      <div class="month-list"></div>
+    </div>
+
+    <div class="sub1">
+      <h2 class="title">Today Expenses</h2>
+      <hr>
+      <div class="header">
+        <form action="/auth/view" method="post">
+          <input type="text" name="empid" value="{{empid}}" readonly hidden>
+          <input type="text" name="date" class="todayDate" id="event-date" readonly>
+          <button style="background: none;border: none; padding: 0;"><i class="fa fa-arrow-right fa-2x" style="cursor: pointer;" aria-hidden="true"></i></button>
+        </form>
+        <div class="plus">
+          <i class="fa fa-plus-circle fa-2x" id="openPopup"></i>
+        </div>
+      </div>
+      <b>Data As per on</b> <input type="text" value="{{date}}"  style="background-color: whitesmoke;"class="todayDate" readonly><br><br>
+      {{#if expensesData}}
+      <table>
+        {{#each expensesData}}
+        <form action="/auth/deleteexpense" method="post"><input type="text" name="id" value="{{this.id}}" hidden><input type="text" name="empid" value="{{this.employee_id}}" hidden>
+          <tr>
+            <td>{{this.item}}</td>
+            <td>{{this.spent}}</td>
+            <td><button style="background: none;border: none; padding: 0; cursor:pointer"><i class="fa fa-trash" aria-hidden="true" id="threedot"></i></button></td>
+          </tr>
+        </form>
+        {{/each}}
+        <tr style="background-color:rgb(33, 116, 33)">
+          <td>Total</td>
+          <td><b>{{total}}</b></td>
+          <td></td>
+        </tr>
+      </table>
+      {{else}}
+      <h4 style="font-size:30px;color:rgb(81, 79, 79);text-align: center; align-items: center; margin-top:25%">You dont have any expenses on your selected date</h4>
+      {{/if}}
+
+    </div>
+
+    <div class="subsub1">
+
+      <h2 class="title">Today Tasks</h2>
+      <hr>
+        <div class="subplus">
+          <i class="fa fa-plus-circle fa-2x" id="openPopupTask"></i>
+        </div>
+      <b>Data As per on</b> <input type="text" value="{{date}}"  style="background-color: whitesmoke;"class="todayDate" readonly><br><br>
+      {{#if taskData}}
+      <table>
+        {{#each taskData}}
+        <form action="/auth/deletetask" method="post"><input type="text" name="id" value="{{this.id}}" hidden><input type="text" name="empid" value="{{this.employee_id}}" hidden>
+          <tr>
+            <td>{{this.task}}</td>
+            <td>{{this.status}}</td>
+            <td><button style="background: none;border: none; padding: 0; cursor:pointer"><i class="fa fa-trash" aria-hidden="true" id="threedot"></i></button></td>
+          </tr>
+        </form>
+        {{/each}}
+      </table>
+      {{else}}
+      <h4 style="font-size:30px;color:rgb(81, 79, 79);text-align: center; align-items: center; margin-top:25%">You dont have any tasks on your selected date</h4>
+      {{/if}}
+    </div>
+
+
+    <div class="modal-overlay" id="popup">
+      <div class="modal-content"><i style="cursor: pointer;" class="fa fa-times" id="closePopup"></i>
+        <form action="/auth/addExpense" method="post">
+          <input type="text" value="{{empid}}" name="empid" hidden>
+          <label class="styled-label">Today</label><input type="text" name="todaydate" id="today-datee"
+            class="styled-input" readonly><br>
+          <label class="styled-label">What for</label><input type="text" name="item" placeholder="Item name"
+            class="styled-input" required><br>
+          <label class="styled-label">Spent</label><input type="text" name="spent" placeholder="Spent amount"
+            class="styled-input" required><br>
+          <button class="styled-button" id="closePopup">Submit</button>
+          <h6>{{added}}</h6>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="popupTask">
+      <div class="modal-content"><i style="cursor: pointer;" class="fa fa-times" id="closePopupTask"></i>
+        <form action="/auth/addTask" method="post">
+          <input type="text" value="{{empid}}" name="empid" hidden>
+          <label class="styled-label">Today</label><input type="text" name="todaydate" id="today-date"
+            class="styled-input" readonly><br>
+          <label class="styled-label">Today Task</label><input type="text" name="task" placeholder="Item name"
+            class="styled-input" required><br>
+          <button class="styled-button" id="closePopupTask">Submit</button>
+          <h6>{{added}}</h6>
+        </form>
+      </div>
+    </div>
+
+     <div style="margin-left: 3%;">
+      <button class="styled-button"><a style="" href="/">Logout</a></button>
+    </div>
+  </div>
+</body>
+
+</html>

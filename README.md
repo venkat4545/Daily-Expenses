@@ -1,7 +1,7 @@
 # FoodDeliverySystem
 ## Available Scripts
 
-In the project directory, you can run:
+In the project directory, you can run locally by:
 
 ### `npm start`
 
@@ -14,5 +14,5 @@ You will also see any lint errors in the console.
 
 In this project we will be having signup and login 
 Do signin with respective Details and Login
-After Login provide nessesary details for registering the merchant 
+Using calender user can create daily todo tasks and can add daily expenses with the help of calender 
 Here we will be using mysql to store the data values with respective routes
