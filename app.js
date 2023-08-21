@@ -26,8 +26,8 @@ db.connect((err)=>{
 app.set('view engine', 'hbs')
 app.use("/",require("./routes/route"))
 app.use("/auth",require("./routes/auth"))
-//app.listen();    //use in production
-app.listen(8080,()=>{
-    console.log("server running on http://localhost:8080/")   //development use
-})
+app.listen();    //use in production
+// app.listen(8080,()=>{
+//     console.log("server running on http://localhost:8080/")   //development use
+// })
  
