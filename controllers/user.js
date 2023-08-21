@@ -33,7 +33,7 @@ exports.signup=(req,res)=>{
         }else if(results.length>0){
             res.render("login",{message: '*email or empid already exists!'})
         }
-    if(results.length==0){
+
     db.query('INSERT INTO users SET ?', { employee_id:empid,name: name, email: email, password: password,phone_number:phno }, (err, results) => {
         if (err) {
             console.log(err);
@@ -43,7 +43,7 @@ exports.signup=(req,res)=>{
             res.render("wel",{empid: empid,name:name,date:formattedDate})
         }
     })
-   }
+   
 })
 }
 
