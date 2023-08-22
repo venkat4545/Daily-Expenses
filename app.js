@@ -20,8 +20,9 @@ const db=mysql.createConnection({
 db.connect((err)=>{
   if(err){
     console.log(err)
-  }
+  }else{
   console.log("connected!")
+  }
 })
 app.set('view engine', 'hbs')
 app.use("/",require("./routes/route"))
