@@ -27,8 +27,6 @@ body {
 
 .contianer {
   margin-top: -5%;
-  width: max-content;
-  height: max-content;
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -44,7 +42,8 @@ body {
 .calendar {
   height: 610px;
   width: max-content;
-  background-color: white;
+  position: relative;
+  background-color: whitesmoke;
   border-radius: 25px;
   overflow: scroll;
   padding: 30px 50px 0px 50px;
@@ -343,10 +342,6 @@ body {
   }
 }
 
-@media (max-width: 768px) {
- 
-}
-
 .sub1 {
   position: relative;
   width: 30%;
@@ -421,8 +416,8 @@ tr:hover {
 
 .plus {
   margin-top: -38px;
-  position: fixed;
-  left: 53%;
+  position: relative;
+  left: 83%;
   width: 40px;
   height: 40px;
   display: flex;
@@ -446,8 +441,8 @@ tr:hover {
 }
 
 .subplus{
-  margin-top: 3px;
-  position: fixed;
+  margin-top: 6px;
+  position: relative;
   left: 85%;
   width: 20px;
   height: 20px;
