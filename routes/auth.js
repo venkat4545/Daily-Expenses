@@ -11,4 +11,6 @@ router.post("/addTask",authcontrollers.todayTask)
 router.post("/view",authcontrollers.view);
 router.post("/deleteexpense",authcontrollers.deleteexpense);
 router.post("/deletetask",authcontrollers.deletetask);
+router.post("/popupEditTask",authcontrollers.popupEditTask);
+router.post("/popupEditExpense",authcontrollers.popupEditExpense);
 module.exports = router;

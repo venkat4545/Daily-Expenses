@@ -2,16 +2,16 @@ const mysql=require("mysql");
 const notifier = require('node-notifier');
 const session = require('express-session');
 const db=mysql.createConnection({
-    host:process.env.DATABASE_HOST,
+    host:process.env.DATABASE_HOSTNAME,
     user:process.env.DATABASE_USER,
     password:process.env.DATABASE_PASSWORD,
-    database:process.env.DATABASE,
-    port:process.env.DATABASE_PORT
+    database:process.env.DATABASE
 })
+//unique queries can use for all functions
 const totalQuery='SELECT SUM(spent) AS total FROM expenses WHERE employee_id=? AND date=?';
 const expensesSelectQuery="SELECT * FROM expenses WHERE employee_id=? AND date=?";
 const taskSelectQuery="SELECT * FROM tasks WHERE employee_id=? AND date=?";
-
+//getting today date
 function formatDate(date) {
     const monthNames = [
         "January", "February", "March", "April", "May", "June",
@@ -24,7 +24,7 @@ function formatDate(date) {
 
     return `${monthNames[monthIndex]} ${day}, ${year}`;
 }
-
+//dont have account? Then why late come and execute below function
 exports.signup=(req,res)=>{
     const {name,email,password,phno,empid}=req.body;
     console.log(req.body)
@@ -47,7 +47,7 @@ exports.signup=(req,res)=>{
    }
 })
 }
-
+//login to welcome page based on their valid creditions
 exports.login=(req,res)=>{
     const {email,password}=req.body;
     console.log(req.body);
@@ -64,19 +64,21 @@ exports.login=(req,res)=>{
         if(results.length>0){
         db.query(totalQuery,[results[0].employee_id,epochdate],(err2,results2)=>{   
             db.query(expensesSelectQuery,[results[0].employee_id,epochdate],(err1,results1)=>{
+                db.query(taskSelectQuery,[results[0].employee_id,epochdate],(err3,results3)=>{
                 if(err1){
                     console.log(err1);
                 }else if(results.length>0) {
-                    return res.render("wel",{empid:results[0].employee_id,expensesData:results1,date:formattedDate,total:results2[0].total});
+                    return res.render("wel",{empid:results[0].employee_id,expensesData:results1,date:formattedDate,total:results2[0].total,taskData:results3});
                 }else{
                     res.render("login",{message: '*email or password is incorrect'})
                 }
+            })
             })
     
         })}
     })
 }
-
+//adding today expenses
 exports.todayExpenses=(req,res)=>{
     const {empid,todaydate,item,spent}=req.body;
     const epochdate=Date.parse(todaydate);
@@ -98,7 +100,7 @@ exports.todayExpenses=(req,res)=>{
         })
     })
 }
-
+//view task and expense based on given date
 exports.view=(req,res)=>{
     const {empid,date}=req.body;
     const epochdate=Date.parse(date);
@@ -115,7 +117,7 @@ exports.view=(req,res)=>{
         })
     })
 }
-
+//delete expense based on id
 exports.deleteexpense=(req,res)=>{
     const {empid,id}=req.body;
     const query="DELETE FROM expenses WHERE id=?";
@@ -137,7 +139,7 @@ exports.deleteexpense=(req,res)=>{
     })
     })
 }
-
+//delete task based on id
 exports.deletetask=(req,res)=>{
     const {empid,id}=req.body;
     const query="DELETE FROM tasks WHERE id=?";
@@ -161,7 +163,7 @@ exports.deletetask=(req,res)=>{
     })
     })
 }
-
+//adding new task
 exports.todayTask=(req,res)=>{
     const {empid,task,todaydate}=req.body;
     const epochdate=Date.parse(todaydate);
@@ -179,6 +181,49 @@ exports.todayTask=(req,res)=>{
             })
             })
         })
+    })
+}
+//changing task status or edit
+exports.popupEditTask=(req,res)=>{
+    const {id,empid,task,status}=req.body;
+    const today=new Date();
+    const formattedDate = formatDate(today);
+    const epochdate=Date.parse(formattedDate);
+    console.log(req.body);
+    db.query(expensesSelectQuery,[empid,epochdate],(err,results)=>{
+        db.query(totalQuery,[empid,epochdate],(err1,results1)=>{
+            db.query("UPDATE tasks SET status=?,task=? WHERE id=?",[status,task,id],(err4,results4)=>{
+            db.query(taskSelectQuery,[empid,epochdate],(err3,results3)=>{
+            if(err1){
+                console.log(err1);
+            }else{
+                return res.render("wel",{empid:empid,date:formattedDate,expensesData:results,total:results1[0].total,taskData:results3})
+            }
+        })
+        })
+    })
+    })
+}
+
+//edit expense data
+exports.popupEditExpense=(req,res)=>{
+    const {id,empid,expense,spent}=req.body;
+    const today=new Date();
+    const formattedDate = formatDate(today);
+    const epochdate=Date.parse(formattedDate);
+    console.log(req.body);
+    db.query("UPDATE expenses SET item=?,spent=? WHERE id=?",[expense,spent,id],(err4,results4)=>{
+    db.query(expensesSelectQuery,[empid,epochdate],(err,results)=>{
+        db.query(totalQuery,[empid,epochdate],(err1,results1)=>{
+            db.query(taskSelectQuery,[empid,epochdate],(err3,results3)=>{
+            if(err1){
+                console.log(err1);
+            }else{
+                return res.render("wel",{empid:empid,date:formattedDate,expensesData:results,total:results1[0].total,taskData:results3})
+            }
+        })
+        })
+    })
     })
 
 }

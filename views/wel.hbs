@@ -3,14 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CALENDAR</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link rel="stylesheet" href="/wel.css">
+  <link rel="website icon" type="png" href="/download.png">
   <script src="/wel.js" defer></script>
 </head>
-
 <body>
+   <div style="margin-left: 90%; position:relative">
+      <h4>Today Expenses : {{total}}</h4>
+      <a style="" href="/"><button class="styled-button">Logout</button></a>
+    </div>
   <div class="contianer">
     {{!-- <div id="event-date">12th december 2022</div> --}}
     <div class="calendar">
@@ -51,7 +55,6 @@
       </div>
       <div class="month-list"></div>
     </div>
-
     <div class="sub1">
       <h2 class="title">Today Expenses</h2>
       <hr>
@@ -59,7 +62,7 @@
         <form action="/auth/view" method="post">
           <input type="text" name="empid" value="{{empid}}" readonly hidden>
           <input type="text" name="date" class="todayDate" id="event-date" readonly>
-          <button style="background: none;border: none; padding: 0;"><i class="fa fa-arrow-right fa-2x" style="cursor: pointer;" aria-hidden="true"></i></button>
+          <button style="background: none;border: none; padding: 0;margin-left:20%"><i class="fa fa-arrow-right fa-2x" style="cursor: pointer;" aria-hidden="true"></i></button>
         </form>
         <div class="plus">
           <i class="fa fa-plus-circle fa-2x" id="openPopup"></i>
@@ -70,10 +73,10 @@
       <table>
         {{#each expensesData}}
         <form action="/auth/deleteexpense" method="post"><input type="text" name="id" value="{{this.id}}" hidden><input type="text" name="empid" value="{{this.employee_id}}" hidden>
-          <tr>
+          <tr data-id-expense="{{this.id}}">
             <td>{{this.item}}</td>
             <td>{{this.spent}}</td>
-            <td><button style="background: none;border: none; padding: 0; cursor:pointer"><i class="fa fa-trash" aria-hidden="true" id="threedot"></i></button></td>
+            <td><button style="background: none;border: none; padding: 0; cursor:pointer"><i class="fa fa-trash fa-1x" aria-hidden="true" id="threedot"></i></button></td>
           </tr>
         </form>
         {{/each}}
@@ -101,12 +104,17 @@
       <table>
         {{#each taskData}}
         <form action="/auth/deletetask" method="post"><input type="text" name="id" value="{{this.id}}" hidden><input type="text" name="empid" value="{{this.employee_id}}" hidden>
-          <tr>
+          <tr data-id="{{this.id}}">
             <td>{{this.task}}</td>
-            <td>{{this.status}}</td>
+            {{#isEqual this.status "done"}}
+            <td><input type="radio" class="done" checked disabled></td>
+            {{else}}
+            <td><input type="radio" class="notDone" disabled></td>
+            {{/isEqual}}
             <td><button style="background: none;border: none; padding: 0; cursor:pointer"><i class="fa fa-trash" aria-hidden="true" id="threedot"></i></button></td>
           </tr>
         </form>
+
         {{/each}}
       </table>
       {{else}}
@@ -116,7 +124,7 @@
 
 
     <div class="modal-overlay" id="popup">
-      <div class="modal-content"><i style="cursor: pointer;" class="fa fa-times" id="closePopup"></i>
+      <div class="modal-content"><i style="cursor: pointer;" class="fa fa-times fa-2x" id="closePopup"></i>
         <form action="/auth/addExpense" method="post">
           <input type="text" value="{{empid}}" name="empid" hidden>
           <label class="styled-label">Today</label><input type="text" name="todaydate" id="today-datee"
@@ -137,7 +145,7 @@
     </div>
 
     <div class="modal-overlay" id="popupTask">
-      <div class="modal-content"><i style="cursor: pointer;" class="fa fa-times" id="closePopupTask"></i>
+      <div class="modal-content"><i style="cursor: pointer;" class="fa fa-times fa-2x" id="closePopupTask"></i>
         <form action="/auth/addTask" method="post">
           <input type="text" value="{{empid}}" name="empid" hidden>
           <label class="styled-label">Today</label><input type="text" name="todaydate" id="today-date"
@@ -150,10 +158,14 @@
       </div>
     </div>
 
-     <div style="margin-left: 3%;">
-      <button class="styled-button"><a style="" href="/">Logout</a></button>
-    </div>
+  <div id="popupEditTask" class="modal">
+ 
+  </div>
+
+  <div id="popupDataExpense" class="modal">
+
+  </div>
+
   </div>
 </body>
-
 </html>

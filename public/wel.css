@@ -399,7 +399,7 @@ td {
 }
 
 tr:hover {
-  background-color: rgb(203, 169, 157);
+  background-color: rgb(224, 150, 234);
   cursor: pointer;
 }
 
@@ -415,7 +415,7 @@ tr:hover {
 }
 
 .plus {
-  margin-top: -38px;
+  margin-top: -32px;
   position: relative;
   left: 83%;
   width: 40px;
@@ -441,7 +441,7 @@ tr:hover {
 }
 
 .subplus{
-  margin-top: 6px;
+  margin-top: 15px;
   position: relative;
   left: 85%;
   width: 20px;
@@ -470,6 +470,18 @@ tr:hover {
   align-items: center;
   z-index: 1000;
 }
+.modal{
+  display: none;
+  position: fixed;
+  top: 20%;
+  left: 40%;
+  width: 30%;
+  height: 30%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
 .modal-content {
   background-color: white;
   padding: 20px;
@@ -485,6 +497,23 @@ tr:hover {
   box-sizing: border-box;
   font-size: 16px;
   margin-bottom: 10px;
+}
+
+input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid red; /* Border color for unchecked */
+  border-radius: 50%;
+  outline: none;
+  background-color: red;
+}
+
+input[type="radio"]:checked {
+  background-color: green; /* Background color when checked */
+  border-color: green; /* Border color when checked */
 }
 
 .header {
@@ -517,6 +546,11 @@ tr:hover {
   cursor: pointer;
 }
 
+.styled-button:hover{
+  background: #ff96ad;
+  box-shadow: 0 0 5px #ff96ad,0 0 25px #ff96ad, 0 0 50px #ff96ad,0 0 200px #ff96ad;
+}
+
 .item {
   width: 200px;
   height: 25px;
@@ -530,8 +564,9 @@ a {
 }
 
 a:hover {
-  color: #666; 
-  background-color: #ac2f2f;
+  border: 2px solid #ff96ad;
+  color: #ff96ad; 
+  background-color: #17181c;;
 }
 
 @media (max-width: 768px) {
