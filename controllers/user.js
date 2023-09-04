@@ -166,10 +166,11 @@ exports.deletetask=(req,res)=>{
 //adding new task
 exports.todayTask=(req,res)=>{
     const {empid,task,todaydate}=req.body;
+    const status="not done";
     const epochdate=Date.parse(todaydate);
     const today=new Date();
     const formattedDate = formatDate(today);
-    db.query("INSERT INTO tasks SET ?",{employee_id:empid,task:task,date:epochdate},(err,results)=>{
+    db.query("INSERT INTO tasks SET ?",{employee_id:empid,task:task,status:status,date:epochdate},(err,results)=>{
         db.query(expensesSelectQuery,[empid,epochdate],(err1,results1)=>{
             db.query(totalQuery,[empid,epochdate],(err2,results2)=>{
                 db.query(taskSelectQuery,[empid,epochdate],(err3,results3)=>{
